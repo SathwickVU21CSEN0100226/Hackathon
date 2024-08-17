@@ -1,0 +1,80 @@
+class EWasteItem:
+    def __init__(self, item_name, brand, model, purchase_date):
+        self.item_name = item_name
+        self.brand = brand
+        self.model = model
+        self.purchase_date = purchase_date
+        self.status = "Pending Recycling"
+
+    def recycle(self):
+        self.status = "Recycled"
+
+
+class EWasteSystem:
+    def __init__(self):
+        self.items = []
+
+    def register_item(self, item_name, brand, model, purchase_date):
+        new_item = EWasteItem(item_name, brand, model, purchase_date)
+        self.items.append(new_item)
+        print(f"{item_name} registered successfully!")
+
+    def view_items(self):
+        if not self.items:
+            print("No items registered.")
+        else:
+            for i, item in enumerate(self.items, 1):
+                print(f"{i}. {item.item_name}, {item.brand}, {item.model}, Purchased: {item.purchase_date}, Status: {item.status}")
+
+    def recycle_item(self, index):
+        if 0 <= index < len(self.items):
+            self.items[index].recycle()
+            print(f"{self.items[index].item_name} has been marked as recycled.")
+        else:
+            print("Invalid index.")
+
+    def generate_report(self):
+        total_items = len(self.items)
+        recycled_items = sum(1 for item in self.items if item.status == "Recycled")
+        pending_items = total_items - recycled_items
+
+        print("\nE-Waste Report")
+        print(f"Total items registered: {total_items}")
+        print(f"Items recycled: {recycled_items}")
+        print(f"Items pending recycling: {pending_items}")
+
+
+def main():
+    system = EWasteSystem()
+
+    while True:
+        print("\nE-Waste Monitoring System")
+        print("1. Register E-waste item")
+        print("2. View E-waste items")
+        print("3. Mark item as recycled")
+        print("4. Generate report")
+        print("5. Exit")
+
+        choice = input("Enter your choice: ")
+
+        if choice == "1":
+            item_name = input("Enter item name: ")
+            brand = input("Enter brand: ")
+            model = input("Enter model: ")
+            purchase_date = input("Enter purchase date (dd-mm-yyyy): ")
+            system.register_item(item_name, brand, model, purchase_date)
+        elif choice == "2":
+            system.view_items()
+        elif choice == "3":
+            system.view_items()
+            index = int(input("Enter the item number to recycle: ")) - 1
+            system.recycle_item(index)
+        elif choice == "4":
+            system.generate_report()
+        elif choice == "5":
+            break
+        else:
+            print("Invalid choice. Please try again.")
+
+if __name__ == "__main__":
+    main()
